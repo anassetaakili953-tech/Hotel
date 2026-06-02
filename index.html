@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> فندق الأحلام </title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════ VARIABLES ═══════════ */
+    :root {
+      --gold:      #c9a84c;
+      --gold-lt:   #e8c96b;
+      --dark:      #0d0d0d;
+      --dark2:     #161616;
+      --dark3:     #1e1e1e;
+      --border:    rgba(201,168,76,.25);
+      --text:      #e8e0d0;
+      --muted:     #888;
+      --radius:    6px;
+      --shadow:    0 8px 40px rgba(0,0,0,.6);
+    }
+
+    /* ═══════════ RESET ═══════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════ HERO BANNER ═══════════ */
+    .hero {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(.45);
+      transition: transform 8s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1.04); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, var(--dark) 100%);
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .hero-content .badge {
+      display: inline-block;
+      letter-spacing: .25em;
+      font-size: .7rem;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: .35rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+    }
+    .hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,.6);
+    }
+    .hero-content h1 span { color: var(--gold); }
+
+    /* ═══════════ DIVIDER ═══════════ */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 2.5rem 6vw 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider-icon { color: var(--gold); font-size: 1.2rem; }
+
+    /* ═══════════ ROOM GALLERY ═══════════ */
+    .rooms-section {
+      padding: 2rem 6vw;
+    }
+    /* ═══════════ CONTACT SECTION ═══════════ */
+.contact-section {
+  padding: 2rem 6vw;
+  text-align: center;
+}
+.contact-card {
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 10px;
+}
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.btn-whatsapp, .btn-map {
+  padding: .8rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: .3s;
+}
+.btn-whatsapp { background: #25d366; color: white; }
+.btn-whatsapp:hover { background: #1ebd5d; }
+.btn-map { background: var(--gold); color: var(--dark); }
+.btn-map:hover { background: var(--gold-lt); }
+
+@media (max-width: 540px) {
+  .contact-buttons { flex-direction: column; }
+}
+    .rooms-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold-lt);
+      margin-bottom: 1.25rem;
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .room-card {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+      cursor: pointer;
+    }
+    .room-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(201,168,76,.15);
+    }
+    .room-card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: var(--dark2);
+      /* placeholder pattern when no image */
+      background-image: repeating-linear-gradient(
+        45deg,
+        var(--dark2) 0,
+        var(--dark2) 10px,
+        var(--dark3) 10px,
+        var(--dark3) 20px
+      );
+    }
+    .room-card-body { padding: .85rem 1rem; }
+    .room-card-title {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .room-card-price {
+      font-size: .8rem;
+      color: var(--gold);
+      margin-top: .25rem;
+    }
+
+    /* ═══════════ BOOKING FORM ═══════════ */
+    .form-section {
+      padding: 2rem 6vw 4rem;
+    }
+    .form-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold-lt);
+      margin-bottom: 1.5rem;
+    }
+    .form-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.5rem 2rem;
+      max-width: 680px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle at top right, rgba(201,168,76,.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 540px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-card { padding: 1.5rem 1rem; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+      margin-bottom: 1.25rem;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    input, select {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: .95rem;
+      padding: .7rem 1rem;
+      outline: none;
+      transition: border-color .25s, box-shadow .25s;
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input::placeholder { color: var(--muted); }
+    input:focus, select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,.12);
+    }
+
+    /* custom select arrow */
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      left: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      pointer-events: none;
+    }
+
+    /* date inputs */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(80%) sepia(40%) saturate(400%) hue-rotate(5deg);
+      cursor: pointer;
+    }
+    input[type="number"]::-webkit-inner-spin-button { opacity: .5; }
+
+    /* ═══════════ SUBMIT BUTTON ═══════════ */
+    .btn-submit {
+      width: 100%;
+      padding: .95rem;
+      margin-top: .5rem;
+      background: linear-gradient(135deg, var(--gold), #a8782a);
+      color: #0d0d0d;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: .06em;
+      transition: opacity .25s, transform .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-submit .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,.3);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══════════ NOTIFICATION ═══════════ */
+    .notif {
+      display: none;
+      align-items: center;
+      gap: .75rem;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      font-size: .95rem;
+      font-weight: 500;
+      animation: slideIn .35s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .notif.success {
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.35);
+      color: #4ade80;
+    }
+    .notif.error {
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.35);
+      color: #f87171;
+    }
+    .notif-icon { font-size: 1.25rem; flex-shrink: 0; }
+
+    /* ═══════════ FOOTER ═══════════ */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    footer span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <!-- ضع هنا صورة الغرفة الرئيسية -->
+    <img class="hero-bg" src="hotel.png" alt="فندق بريق" onerror="this.style.display='none'" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="badge">★ فندق بريق الفاخر ★</div>
+      <h1>تجربة إقامة <span>لا تُنسى</span></h1>
+    </div>
+  </section>
+
+  <!-- ══ DIVIDER ══ -->
+  <div class="divider"><span class="divider-icon">◈</span></div>
+
+  <!-- ══ ROOM GALLERY ══ -->
+  <section class="rooms-section">
+    <h2>غرفنا المميزة</h2>
+    <div class="rooms-grid">
+
+      <div class="room-card">
+        <!-- استبدل hotel_room1.jpg بصورتك الحقيقية -->
+        <img class="room-card-img" src="room-standart.png" alt="غرفة ستاندرد" />
+        <div class="room-card-body">
+          <div class="room-card-title">غرفة ستاندرد</div>
+          <div class="room-card-price">من 500 درهم / ليلة</div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img class="room-card-img" src="Deluxe Room.png" alt="غرفة ديلوكس" />
+        <div class="room-card-body">
+          <div class="room-card-title">غرفة ديلوكس</div>
+          <div class="room-card-price">من 850 درهم / ليلة</div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img class="room-card-img" src="roiyale suite.png" alt="جناح" />
+        <div class="room-card-body">
+          <div class="room-card-title">الجناح الملكي</div>
+          <div class="room-card-price">من 1500 درهم / ليلة</div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img class="room-card-img" src="villa.png" alt="فيلا" />
+        <div class="room-card-body">
+          <div class="room-card-title">فيلا مع مسبح</div>
+          <div class="room-card-price">من 2800 درهم / ليلة</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ DIVIDER ══ -->
+  <div class="divider"><span class="divider-icon">◈</span></div>
+
+  <!-- ══ BOOKING FORM ══ -->
+  <section class="form-section">
+    <h2>احجز إقامتك الآن</h2>
+
+    <div class="form-card">
+
+      <!-- Notification Area -->
+      <div class="notif" id="notif" role="alert">
+        <span class="notif-icon" id="notif-icon"></span>
+        <span id="notif-msg"></span>
+      </div>
+
+      <div class="form-row">
+
+        <!-- الاسم الكامل -->
+        <div class="form-group">
+          <label for="name">الاسم الكامل</label>
+          <input type="text" id="name" name="name" placeholder="مثال: أحمد بنعلي" required />
+        </div>
+
+        <!-- نوع الغرفة -->
+        <div class="form-group">
+          <label for="room_type">نوع الغرفة</label>
+          <div class="select-wrap">
+            <select id="room_type" name="room_type" required>
+              <option value="" disabled selected>اختر نوع الغرفة</option>
+              <option value="standard">غرفة ستاندرد</option>
+              <option value="deluxe">غرفة ديلوكس</option>
+              <option value="suite">الجناح الملكي</option>
+              <option value="villa">فيلا مع مسبح</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- عدد النزلاء -->
+        <div class="form-group">
+          <label for="guests">عدد النزلاء</label>
+          <input type="number" id="guests" name="guests"
+                 min="1" max="10" placeholder="1" required />
+        </div>
+
+        <!-- البريد الإلكتروني -->
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input type="email" id="email" name="email"
+                 placeholder="example@email.com" required />
+        </div>
+
+        <!-- تاريخ الوصول -->
+        <div class="form-group">
+          <label for="check_in">تاريخ الوصول</label>
+          <input type="date" id="check_in" name="check_in" required />
+        </div>
+
+        <!-- تاريخ المغادرة -->
+        <div class="form-group">
+          <label for="check_out">تاريخ المغادرة</label>
+          <input type="date" id="check_out" name="check_out" required />
+        </div>
+
+      </div><!-- /form-row -->
+
+      <button class="btn-submit" id="submit-btn" type="button" onclick="submitBooking()">
+        <span id="btn-text">تأكيد الحجز</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+    </div><!-- /form-card -->
+  </section>
+  <section class="contact-section">
+  <div class="contact-card">
+    <h2>تواصل معنا</h2>
+    <div class="contact-buttons">
+      <a href="https://wa.me/212695187022" target="_blank" class="btn-whatsapp">
+        تواصل معنا عبر واتساب
+      </a>
+      <a href="https://maps.app.goo.gl/JoDRecjfL7fQ4Y4N6" target="_blank" class="btn-map">
+        موقعنا على الخريطة
+      </a>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    جميع الحقوق محفوظة &copy; 2025 — <span>فندق بريق</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
